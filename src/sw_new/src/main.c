@@ -641,7 +641,7 @@ int main(void)
 	}
 #endif
 
-	int32_t pulse_count;
+/*	int32_t pulse_count;
 	int32_t freq_count;
 	uint64_t LO_FREQ;
 
@@ -655,6 +655,14 @@ int main(void)
 			LO_FREQ+= STEP_FREQ;
 		}
 	}
-
+*/
+	int i;
+	uint32_t data;
+	adc_capture(256, ADC_DDR_BASEADDR);
+	Xil_DCacheInvalidateRange(ADC_DDR_BASEADDR,16384);
+	for (i = 0; i < 256; i++){
+		data = (ADC_DDR_BASEADDR + (i*4));
+		xil_printf("%4x\n", data);
+	}
 	return 0;
 }
