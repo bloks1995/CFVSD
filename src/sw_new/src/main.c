@@ -658,8 +658,10 @@ int main(void)
 */
 	int i;
 	uint32_t data;
+	//capture 256 samples and store into RAM
 	adc_capture(256, ADC_DDR_BASEADDR);
-	Xil_DCacheInvalidateRange(ADC_DDR_BASEADDR,16384);
+	Xil_DCacheInvalidateRange(ADC_DDR_BASEADDR,256);
+	//print recorded data
 	for (i = 0; i < 256; i++){
 		data = (ADC_DDR_BASEADDR + (i*4));
 		xil_printf("%4x\n", data);
