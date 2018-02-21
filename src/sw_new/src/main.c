@@ -1,4 +1,5 @@
-*   @file   main.c
+/***************************************************************************//**
+ *   @file   main.c
  *   @brief  Implementation of Main Function.
  *   @author DBogdan (dragos.bogdan@analog.com)
 ********************************************************************************
@@ -110,8 +111,8 @@ AD9361_InitParam default_init_param = {
 	0,		//ensm_enable_pin_pulse_mode_enable *** adi,ensm-enable-pin-pulse-mode-enable
 	0,		//ensm_enable_txnrx_control_enable *** adi,ensm-enable-txnrx-control-enable
 	/* LO Control */
-	2800000000UL,	//rx_synthesizer_frequency_hz *** adi,rx-synthesizer-frequency-hz
-	2800000000UL,	//tx_synthesizer_frequency_hz *** adi,tx-synthesizer-frequency-hz
+	2500000000UL,	//rx_synthesizer_frequency_hz *** adi,rx-synthesizer-frequency-hz
+	2500000000UL,	//tx_synthesizer_frequency_hz *** adi,tx-synthesizer-frequency-hz
 	/* Rate & BW Control */
 	{983040000, 245760000, 122880000, 61440000, 30720000, 30720000},//uint32_t	rx_path_clock_frequencies[6] *** adi,rx-path-clock-frequencies
 	{983040000, 122880000, 122880000, 61440000, 30720000, 30720000},//uint32_t	tx_path_clock_frequencies[6] *** adi,tx-path-clock-frequencies
@@ -642,7 +643,7 @@ int main(void)
 		return -1;
 	}
 #endif
-
+	ad9361_set_rx_sampling_freq (ad9361_phy, 1000000);
 /*	int32_t pulse_count;
 	int32_t freq_count;
 	uint64_t LO_FREQ;
@@ -658,14 +659,32 @@ int main(void)
 		}
 	}
 */
-	int i;
+	int i,j;
 	uint32_t data;
-	adc_capture(256, ADC_DDR_BASEADDR);
-	Xil_DCacheInvalidateRange(ADC_DDR_BASEADDR,256);
-	for (i = 0; i < 256; i++){
-		data = Xil_In32(ADC_DDR_BASEADDR + (i*4));
-		xil_printf("%4x\n", data);
+	for (j = 0; j < 100; j++)
+	{
+		adc_capture(100000, ADC_DDR_BASEADDR);
+		Xil_DCacheInvalidateRange(ADC_DDR_BASEADDR,100000);
+		for (i = 0; i < 100; i++){
+			data = Xil_In32(ADC_DDR_BASEADDR + (i*4000));
+			xil_printf("%4x\n", data);
+		}
 	}
+	mdelay(20000);
+	/*
+	int32_t pulse_count;
+	int32_t freq_count;
+	uint64_t LO_FREQ;
+	for(pulse_count= 1; pulse_count< PULSE_NUMBER; pulse_count++)
+	{
+		LO_FREQ= START_FREQ;
+		for (freq_count= 1; freq_count<= FREQ_NUMBER; freq_count++)
+		{
+			ad9361_set_tx_lo_freq (ad9361_phy, LO_FREQ);
+			//ad9361_set_rx_lo_freq (ad9361_phy, LO_FREQ);
+			LO_FREQ+= STEP_FREQ;
+		}
+	}
+*/
 	return 0;
 }
-
