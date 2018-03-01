@@ -1,3 +1,4 @@
+##Edited by James Tucker 3/1/2018
 import numpy as np
 import matplotlib.pyplot as plt
 ## Signal Processing in Python 2.7
