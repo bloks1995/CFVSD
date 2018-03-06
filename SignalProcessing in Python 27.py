@@ -39,18 +39,15 @@ try:
 	plt.plot(sig)	
 	plt.show()
 	
+	#figure(3)
+	#uwb data, frequency up to 3 Hz
+	freq_x_axis=linspace(0,3,3/(sample_freq/num))
+	plot(freq_x_axis,abs(fft_sig(1:length(freq_x_axis)))/max(abs(fft_sig(1:length(freq_x_axis)))),'r--')
+	xlabel('Frequency (Hz)','linewidth',12,'fontsize',15,'Fontname','Timesnewroman','fontWeight','bold')
+	ylabel('Normalized Magnitude','linewidth',12,'fontsize',15,'Fontname','Timesnewroman','fontWeight','bold')
+
+	
 	conn.close()
 except Exception as e:
 	print e
 	raw_input('ERROR')
-
-#--------plot the freq domain signal detected by radar--------#
-#figure(3)
-
-#uwb data, frequency up to 3 Hz
-#freq_x_axis=linspace(0,3,3/(sample_freq/num))
-#plot(freq_x_axis,abs(fft_sig(1:length(freq_x_axis)))/max(abs(fft_sig(1:length(freq_x_axis)))),'r--')
-#xlabel('Frequency (Hz)','linewidth',12,'fontsize',15,'Fontname','Timesnewroman','fontWeight','bold')
-#ylabel('Normalized Magnitude','linewidth',12,'fontsize',15,'Fontname','Timesnewroman','fontWeight','bold')
-
-#raw_input()
